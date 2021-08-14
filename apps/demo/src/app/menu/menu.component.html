@@ -1,0 +1,20 @@
+<p>Upload a maze</p>
+
+<div>
+    <input type="file" style="display: none" #file (change)="handleFile($event.target.files)"/>
+    <button type="button" class="btn btn-primary" (click)="file.click()"> Browse </button>
+</div>
+
+<br>
+
+<div *ngIf="uploadResponse">
+    <p>Select a maze to start playing</p>
+    <button *ngFor="let maze of uploadResponse" class="btn btn-link" (click)="onSelect(maze)">{{ maze }}</button>
+</div>
+
+<nav>
+    <ul>
+        <li><a routerLink="/maze-component" routerLinkActive="active">To maze</a></li>
+        <li><a routerLink="/victory-component" routerLinkActive="active">To victory page</a></li>
+    </ul>
+</nav>
