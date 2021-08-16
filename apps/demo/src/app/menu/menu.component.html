@@ -9,12 +9,5 @@
 
 <div *ngIf="uploadResponse">
     <p>Select a maze to start playing</p>
-    <button *ngFor="let maze of uploadResponse" class="btn btn-link" (click)="onSelect(maze)">{{ maze }}</button>
+    <button *ngFor="let maze of uploadResponse" class="btn btn-link" (click)="onSelect(maze)">{{maze}}</button>
 </div>
-
-<nav>
-    <ul>
-        <li><a routerLink="/maze-component" routerLinkActive="active">To maze</a></li>
-        <li><a routerLink="/victory-component" routerLinkActive="active">To victory page</a></li>
-    </ul>
-</nav>

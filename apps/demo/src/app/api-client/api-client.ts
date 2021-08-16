@@ -94,7 +94,7 @@ export class Client {
     /**
      * @return Success
      */
-     getMoves(filename: string): Observable<string[]> {
+     getMoves(filename: string, xPos: number, yPos: number): Observable<string[]> {
         let url_ = this.baseUrl + "/Moves";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -105,7 +105,9 @@ export class Client {
                 "Accept": "text/plain"
             }),
             params: {
-                "FileName": filename
+                "FileName": filename,
+                "XPos": xPos,
+                "YPos": yPos
             }
         };
 

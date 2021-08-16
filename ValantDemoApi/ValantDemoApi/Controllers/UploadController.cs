@@ -15,6 +15,7 @@ namespace ValantDemoApi.Controllers
     private readonly ILogger<UploadController> _logger;
     private readonly IMemoryCache _memoryCache;
     private static readonly string _mazeNamesKey = "mazenames";
+    private static readonly string _startKeyword = "start";
 
     public UploadController(ILogger<UploadController> logger, IMemoryCache memoryCache)
     {
@@ -27,8 +28,16 @@ namespace ValantDemoApi.Controllers
     {
       IFormFile file = Request.Form.Files[0];
       List<string> mazeLines = new List<string>();
-      string line;
+      string line, startPositionKey;
       int mazeWidth = 0;
+
+      var cacheExpiryOptions = new MemoryCacheEntryOptions
+      {
+        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+        Priority = CacheItemPriority.High,
+        SlidingExpiration = TimeSpan.FromMinutes(2),
+        Size = 1024
+      };
 
       using (var reader = new StreamReader(file.OpenReadStream()))
       {
@@ -48,18 +57,15 @@ namespace ValantDemoApi.Controllers
         foreach (char c in row)
         {
           mazeArray[i, j] = c;
+          if (c == 'S')
+          {
+            startPositionKey = file.FileName + _startKeyword;
+            _memoryCache.Set(startPositionKey, new int[] { i, j }, cacheExpiryOptions);
+          }
           j++;
         }
         i++;
       }
-
-      var cacheExpiryOptions = new MemoryCacheEntryOptions
-      {
-        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
-        Priority = CacheItemPriority.High,
-        SlidingExpiration = TimeSpan.FromMinutes(2),
-        Size = 1024
-      };
 
       _memoryCache.Set(file.FileName, mazeArray, cacheExpiryOptions);
 

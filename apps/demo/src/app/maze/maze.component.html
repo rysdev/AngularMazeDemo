@@ -1,1 +1,7 @@
-<p>maze works!</p>
+<p>Welcome to the maze game</p>
+
+<div *ngIf="currentDirections">
+    <p>Select a direction</p>
+    <button *ngFor="let dir of currentDirections" class="btn btn-link" (click)="onSelect(dir)">{{dir}}</button>
+</div>
+

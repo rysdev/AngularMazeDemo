@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
   mazeToUpload: File | null = null;
-  public uploadResponse: string[];
-  public loadResponse: string[];
+  uploadResponse: string[];
+  loadResponse: string[];
 
   constructor(private logger: LoggingService, private stuffService: StuffService, private router: Router) { }
 
@@ -39,8 +39,11 @@ export class MenuComponent implements OnInit {
     this.stuffService.getMoves(maze).subscribe({
       next: (response: string[]) => {
         this.loadResponse = response;
-        // route to maze page and pass loadResponse as prop
-        this.router.navigate(['/maze']);
+        if (this.loadResponse[0] == 'Victory') {
+          this.router.navigate(['/victory']);
+        } else {
+            this.router.navigate(['/maze'], { queryParams: { MazeName: maze, StartX: this.loadResponse[0], StartY: this.loadResponse[1], StartDirections: JSON.stringify(this.loadResponse.slice(2)) }});
+        }
       },
       error: (error) => {
         this.logger.error('Error uploading maze: ', error);

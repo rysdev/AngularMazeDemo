@@ -16,7 +16,7 @@ export class StuffService {
     return this.httpClient.uploadMaze(mazeToUpload);
   }
 
-  public getMoves(filename: string): Observable<string[]> {
-    return this.httpClient.getMoves(filename);
+  public getMoves(filename: string, xPos: number = -1, yPos: number = -1): Observable<string[]> {
+    return this.httpClient.getMoves(filename, xPos, yPos);
   }
 }
